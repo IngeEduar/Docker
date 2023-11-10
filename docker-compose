@@ -1,0 +1,75 @@
+depends_on: Esta configuración te permite especificar qué servicios dependen de otros. Docker Compose esperará a que los servicios dependientes estén en funcionamiento antes de iniciar el servicio actual.
+services:
+  web:
+    build: .
+  db:
+    image: postgres
+  web:
+    depends_on:
+      - db
+
+environment: Puedes definir variables de entorno específicas para un servicio en lugar de hacerlo en un Dockerfile. Esto es útil para configurar variables de entorno específicas de la aplicación.
+
+services:
+  app:
+    image: myapp
+    environment:
+      DB_HOST: db-server
+
+volumes: Esta configuración permite montar volúmenes en un contenedor. Puedes definir volúmenes para compartir datos entre contenedores o con el sistema host.
+
+services:
+  app:
+    image: myapp
+    volumes:
+      - /path/to/data:/app/data
+
+networks: Puedes crear redes personalizadas y conectar servicios específicos a ellas. Esto permite un mejor aislamiento y control de la comunicación entre los contenedores.
+
+networks:
+  my-network:
+services:
+  app:
+    image: myapp
+    networks:
+      - my-network
+
+ports: Puedes mapear puertos entre el host y el contenedor. Esto es útil para exponer servicios en un puerto específico del host.
+
+services:
+  app:
+    image: myapp
+    ports:
+      - "8080:80"
+
+build: Define cómo construir la imagen del servicio. Puedes especificar un contexto de compilación (ruta al directorio con el Dockerfile) y opciones adicionales.
+
+services:
+  app:
+    build:
+      context: ./myapp
+      dockerfile: Dockerfile.prod
+
+restart: Configura la política de reinicio del servicio en caso de fallos. Puedes definir "no", "always", "on-failure", entre otros.
+
+services:
+  app:
+    image: myapp
+    restart: always
+
+logging: Controla la configuración de registro para un servicio. Puedes especificar controladores de registro personalizados y opciones.
+
+services:
+  app:
+    image: myapp
+    logging:
+      driver: json-file
+      options:
+        max-size: "1m"
+        
+command: Permite especificar un comando que se ejecutará al iniciar el contenedor. Esto puede anular el comando especificado en el Dockerfile.
+
+services:
+  app:
+    image: myapp
+    command: "start-app"
