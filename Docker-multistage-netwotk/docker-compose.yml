@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: api-symfony
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /var/www/html
+    ports:
+      - 8000:8000
+    volumes:
+      - ./app/src:/var/www/html/src
+      - ./app/public:/var/www/html/public
+      - ./app/config:/var/www/html/config
+      - ./app/bin:/var/www/html/bin
+    networks:
+      - network-test
+  db:
+    container_name: bd-symfony
+    image: postgres:15
+    ports:
+      - 5432:5432
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    networks:
+      - network-test
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: bdejemplo
+
+networks:
+  network-test:
+    name: network-test

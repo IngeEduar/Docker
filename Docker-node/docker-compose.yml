@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  api:
+    container_name: api_node
+    image: docker-node-api
+    working_dir: /usr/src/app/
+    ports:
+      - 8080:8080
+    volumes:
+      - /app:/usr/src/app
+    networks:
+      - net
+
+networks:
+  net:
+    name: net

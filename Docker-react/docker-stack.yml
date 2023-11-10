@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  nginx:
+    container_name: prueba2_nginx
+    image: nginx:1.25.2
+    hostname: prueba2_nginx
+    working_dir: /etc/nginx/conf.d/
+    volumes:
+      - ./config/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 2000:2000
+    networks:
+      - react-net
+
+  react:
+    container_name: prueba2_react
+    image: prueba2_react:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: prueba2_react
+    working_dir: /app/
+    ports:
+      - 3000:3000
+    networks:
+      - react-net
+
+networks:
+  react-net:
+    name: react_net
+

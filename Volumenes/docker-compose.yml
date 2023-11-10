@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: api-symfony
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /var/www/html
+    ports:
+      - 8000:8000
+    volumes:
+      - ./app/:/var/www/html/
+    tmpfs:
+      - /tmp
+    networks:
+      - network-test
+
+  db:
+    container_name: db-mariadb
+    image: mariadb:10.5.8
+    ports:
+      - 3306:3306
+    volumes:
+      - ./database:/var/lib/mysql
+    networks:
+      - network-test
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bdejemplo
+
+networks:
+  network-test:
+    name: network-test
